@@ -31,14 +31,14 @@ var zensur = {
 
   censorElement: function(element) {
     var state = { s: 1 };
-    var words = element.innerHTML.split(" ");
+    var words = element.innerHTML.split(/([\t\n\r ])/);
     for (var i in words) {
       words[i] = this.censorWord(state, words[i]);
     }
     if (state.s === 2) {
       words[words.length-1] = words[words.length-1] + this.stop_censor;
     }
-    element.innerHTML = words.join(" ");
+    element.innerHTML = words.join("");
   },
 
   censor: function() {
