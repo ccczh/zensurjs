@@ -49,7 +49,7 @@ var zensur = {
   },
 
   censorElement: function(element) {
-    var state = { s: 1 };
+    var state = { s: 0 };
     var words = element.innerHTML.split(/([\t\n\r ])/);
     for (var i in words) {
       words[i] = this.censorWord(state, words[i]);
