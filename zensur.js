@@ -74,8 +74,4 @@ var zensur = {
     }
   },
 
-  censor: function() {
-    this.censorElement(document.body);
-  },
-
 };
