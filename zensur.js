@@ -18,10 +18,11 @@ var zensur = {
   ],
   start_censor: "<span class=\"censored\">",
   stop_censor: "</span>",
+  re_censor: /[0-9A-Za-z]/,
 
   censorWord: function(state, word) {
     // ignore words not containing letters (may be spaces only)
-    if (!word.match(/[0-9A-Za-z]/)) {
+    if (!word.match(this.re_censor)) {
       return word;
     }
 
@@ -68,7 +69,7 @@ var zensur = {
       if (childs[i].nodeType == 1) {
         this.censorElement(childs[i]);
       }
-      else if (childs[i].nodeType == 3) {
+      else if (childs[i].nodeType == 3 && childs[i].nodeValue.match(this.re_censor)) {
         element.replaceChild(this.censorTextNode(childs[i]), childs[i]);
       }
     }
