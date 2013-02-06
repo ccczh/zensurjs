@@ -1,48 +1,51 @@
 var zensur = {
 
   // states
-  // 0: uncensored0 -> 1: uncensored1 -> 2: censored -> 0: uncensored0
+  // 0: uncensored
+  // 1: start_censor
+  // 2: censored
   // state transition probabilities:
   p_trans: [
-    // 0     uncensored0 -> uncensored0
-    // 1     uncensored0 -> uncensored1
-    // 0     uncensored0 -> censored
-    0.02, // uncensored1 -> uncensored0
-    // x     uncensored1 -> uncensored1
-    0.08, // uncensored1 -> censored
-    0.7,  // censored    -> uncensored0
-    // 0     censored    -> uncensored1
-    // x     censored    -> censored
+    // x     uncensored   -> uncensored
+    0.08, // uncensored   -> start_censor
+    // 0     uncensored   -> censored
+    // 0     start_censor -> uncensored
+    // 0     start_censor -> start_censor
+    // 1     start_censor -> censored
+    0.55, // censored   -> uncensored
+    // 0     censored   -> start_censor
+    // x     censored   -> censored
   ],
   start_censor: "<span class=\"censored\">",
   stop_censor: "</span>",
 
   censorWord: function(state, word) {
+    // ignore words not containing letters (may be spaces only)
     if (!word.match(/[0-9A-Za-z]/)) {
       return word;
     }
-    if (state.s === 0) {
-      // uncensored0 -> uncensored1
-      state.s = 1;
-      return word;
-    }
+
     var r = Math.random();
-    if (state.s === 1 && r < this.p_trans[0]) {
-      // uncensored1 -> uncensored0
+    var prefix = "";
+    var suffix = "";
+
+    if (state.s === 1) {
+      // start_censor -> censored
       state.s = 2;
-      return this.start_censor + word + this.stop_censor;
+      prefix = this.start_censor;
     }
-    else if (state.s === 1 && r < this.p_trans[0] + this.p_trans[1]) {
-      // uncensored1 -> censored
-      state.s = 2;
-      return this.start_censor + word;
+
+    if (state.s === 0 && r < this.p_trans[0]) {
+      // uncensored -> start_censor
+      state.s = 1;
     }
-    else if (state.s === 2 && r < this.p_trans[2]) {
-      // censored -> uncensored0
+    else if (state.s === 2 && r < this.p_trans[1]) {
+      // censored -> uncensored
       state.s = 0;
-      return word + this.stop_censor;
+      suffix = this.stop_censor;
     }
-    return word;
+
+    return prefix + word + suffix;
   },
 
   censorElement: function(element) {
