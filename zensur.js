@@ -51,6 +51,10 @@ var zensur = {
 
   censorTextNode: function(node) {
     var state = { s: 0 };
+    if (Math.random() < this.p_trans[0]) {
+      // start_censor
+      state.s = 1;
+    }
     var words = node.nodeValue.split(/([\t\n\r ])/);
     for (var i in words) {
       words[i] = this.censorWord(state, words[i]);
