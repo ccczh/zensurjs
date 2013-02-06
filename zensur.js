@@ -69,13 +69,6 @@ var zensur = {
         this.censorElement(childs[i]);
       }
       else if (childs[i].nodeType == 3) {
-        /*
-        var newnodes = this.censorTextNode(childs[i]).childNodes;
-        for (var j in newnodes) {
-          element.insertBefore(newnodes[j], childs[i]);
-        }
-        element.removeChild(childs[i]);
-        */
         element.replaceChild(this.censorTextNode(childs[i]), childs[i]);
       }
     }
