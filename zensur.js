@@ -48,25 +48,41 @@ var zensur = {
     return prefix + word + suffix;
   },
 
-  censorElement: function(element) {
+  censorTextNode: function(node) {
     var state = { s: 0 };
-    var words = element.innerHTML.split(/([\t\n\r ])/);
+    var words = node.nodeValue.split(/([\t\n\r ])/);
     for (var i in words) {
       words[i] = this.censorWord(state, words[i]);
     }
     if (state.s === 2) {
       words[words.length-1] = words[words.length-1] + this.stop_censor;
     }
-    element.innerHTML = words.join("");
+    var newnode = document.createElement("span");
+    newnode.innerHTML = words.join("");
+    return newnode;
+  },
+
+  censorElement: function(element) {
+    var childs = element.childNodes;
+    for (var i in childs) {
+      if (childs[i].nodeType == 1) {
+        this.censorElement(childs[i]);
+      }
+      else if (childs[i].nodeType == 3) {
+        /*
+        var newnodes = this.censorTextNode(childs[i]).childNodes;
+        for (var j in newnodes) {
+          element.insertBefore(newnodes[j], childs[i]);
+        }
+        element.removeChild(childs[i]);
+        */
+        element.replaceChild(this.censorTextNode(childs[i]), childs[i]);
+      }
+    }
   },
 
   censor: function() {
-    var elements = document.getElementsByTagName("p");
-    for (var i in elements) {
-      if (elements[i].children && elements[i].children.length === 0) {
-        this.censorElement(elements[i]);
-      }
-    }
+    this.censorElement(document.body);
   },
 
 };
