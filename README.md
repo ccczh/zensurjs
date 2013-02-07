@@ -1,7 +1,7 @@
 zensurjs
 ========
 
-Automatically censors random parts of your website.
+Automatically censor random parts of your website.
 
 Installation
 ------------
