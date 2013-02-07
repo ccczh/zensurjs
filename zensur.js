@@ -70,10 +70,19 @@ var zensur = {
   censorElement: function(element) {
     var childs = element.childNodes;
     for (var i in childs) {
-      if (childs[i].nodeType === 1) {
+      if (childs[i].nodeType === 1 &&
+          childs[i].nodeName !== "OPTION" &&
+          childs[i].nodeName !== "SCRIPT" &&
+          childs[i].nodeName !== "SELECT" &&
+          childs[i].nodeName !== "STYLE" &&
+          childs[i].nodeName !== "TEXTAREA" &&
+          childs[i].nodeName !== "TITLE")
+      {
         this.censorElement(childs[i]);
       }
-      else if (childs[i].nodeType === 3 && childs[i].nodeValue.match(this.re_censor)) {
+      else if (childs[i].nodeType === 3 &&
+          childs[i].nodeValue.match(this.re_censor))
+      {
         element.replaceChild(this.censorTextNode(childs[i]), childs[i]);
       }
     }
