@@ -9,7 +9,7 @@ Installation
 *   Download [zensur.js](zensur.js) and upload it to your webspace.
     *   For security and privacy reasons please don't hotlink the file from somewhere else.
 *   Insert the code snippet below to the header (or somewhere else) of your HTML document.
-    *   You may also move the CSS style to your stylesheet and customize it to your needs.
+    *   You may also move the stylesheet to your CSS file and customize it to your needs.
 
 ```html
 <style type="text/css">
