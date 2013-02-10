@@ -19,6 +19,33 @@ function zensurjs() {
   var stop_censor = "</span>";
   var re_censor = /[0-9A-Za-z]/;
 
+  function splitWords(text) {
+    // some older IEs don't suppport capturing parentheses
+    // return text.split(/([\t\n\r ])/);
+    if (text.length === 0) {
+      return [""];
+    }
+    var words = [];
+    var last_i = 0;
+    for (var i = 0; i < text.length; i++) {
+      switch(text[i]) {
+        case '\t':
+        case '\n':
+        case '\r':
+        case ' ':
+          if (last_i !== i) {
+            words.push(text.slice(last_i, i));
+          }
+          words.push(text[i]);
+          last_i = i + 1;
+      }
+    }
+    if (last_i !== text.length) {
+      words.push(text.slice(last_i));
+    }
+    return words;
+  }
+
   function censorWord(state, word) {
     // ignore words not containing letters (may be spaces only)
     if (!word.match(re_censor)) {
@@ -54,7 +81,7 @@ function zensurjs() {
       // start_censor
       state.s = 1;
     }
-    var words = node.nodeValue.split(/([\t\n\r ])/);
+    var words = splitWords(node.nodeValue);
     for (var i in words) {
       words[i] = censorWord(state, words[i]);
     }
