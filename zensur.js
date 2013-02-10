@@ -1,4 +1,4 @@
-function zensurjs() {
+(function() {
   // states
   // 0: uncensored
   // 1: start_censor
@@ -114,5 +114,5 @@ function zensurjs() {
     }
   }
 
-  return censorElement;
-}
+  window.zensurjs = censorElement;
+})();

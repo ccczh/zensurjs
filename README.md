@@ -17,6 +17,6 @@ Installation
 </style>
 <script type="text/javascript" src="zensur.js"></script>
 <script type="text/javascript">
-  window.onload = function() { zensurjs()(document.body); };
+  window.onload = function() { zensurjs(document.body); };
 </script>
 ```
