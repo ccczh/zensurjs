@@ -164,5 +164,6 @@
         censorElement(arg, true);
       }
     }
+    return isCensored;
   };
 })();
