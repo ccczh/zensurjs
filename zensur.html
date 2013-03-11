@@ -7,6 +7,7 @@
     <title>censored lorem ipsum</title>
     <style type="text/css">
       .censored { color: black; background-color: black; }
+      .halfcensored .censored { color: black; background-color: grey; }
     </style>
     <script type="text/javascript" src="zensur.js"></script>
     <script type="text/javascript">
@@ -15,6 +16,10 @@
   </head>
 
   <body>
+    <p class="halfcensored">
+    <a href="" onclick="zensurjs(); false">Toggle Censorship for this page!</a>
+    </p>
+
     <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam
     lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra

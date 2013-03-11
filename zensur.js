@@ -15,9 +15,13 @@
     // 0     censored   -> start_censor
     // x     censored   -> censored
   ];
-  var start_censor = "<span class=\"censored\">";
-  var stop_censor = "</span>";
+  var censored_tag = "span";
+  var censored_class = "censored";
+  var start_censor = "<" + censored_tag + " class=\"" + censored_class + "\">";
+  var stop_censor = "</" + censored_tag + ">";
   var re_censor = /[0-9A-Za-z]/;
+  var isCensored = true;
+  var censoredElements = [];
 
   function splitWords(text) {
     // some older IEs don't suppport capturing parentheses
@@ -88,14 +92,16 @@
     if (state.s === 2) {
       words[words.length-1] = words[words.length-1] + stop_censor;
     }
-    var newnode = document.createElement("span");
+    var newnode = document.createElement(censored_tag);
     newnode.innerHTML = words.join("");
     return newnode;
   }
 
-  function censorElement(element) {
+  function censorElement(element, on) {
     var childs = element.childNodes;
+    var uncensored = false;
     for (var i in childs) {
+
       if (childs[i].nodeType === 1 &&
           childs[i].nodeName !== "OPTION" &&
           childs[i].nodeName !== "SCRIPT" &&
@@ -104,15 +110,59 @@
           childs[i].nodeName !== "TEXTAREA" &&
           childs[i].nodeName !== "TITLE")
       {
-        censorElement(childs[i]);
+        if (!on &&
+            childs[i].nodeName === censored_tag.toUpperCase() &&
+            childs[i].className === censored_class &&
+            childs[i].childNodes.length === 1)
+        {
+          uncensored = true;
+          element.replaceChild(childs[i].childNodes[0], childs[i]);
+        }
+
+        var childUncensored = censorElement(childs[i], on);
+        if (!on && childUncensored)
+        {
+          var newnode = document.createTextNode("");
+          for (var j in childs[i].childNodes) {
+            if (!childs[i].childNodes[j].nodeType === 3) {
+              return;
+            }
+            if (childs[i].childNodes[j].nodeValue) {
+              newnode.nodeValue += childs[i].childNodes[j].nodeValue;
+            }
+          }
+          element.replaceChild(newnode, childs[i]);
+        }
       }
-      else if (childs[i].nodeType === 3 &&
+
+      else if (on &&
+          childs[i].nodeType === 3 &&
           childs[i].nodeValue.match(re_censor))
       {
         element.replaceChild(censorTextNode(childs[i]), childs[i]);
       }
+
+    }
+
+    return uncensored;
+  }
+
+  function doCensor(on) {
+    for (var i in censoredElements) {
+      censorElement(censoredElements[i], on);
     }
   }
 
-  window.zensurjs = censorElement;
+  window.zensurjs = function(arg) {
+    if (arg === undefined) {
+      isCensored = !isCensored;
+      doCensor(isCensored);
+    }
+    else {
+      censoredElements.push(arg);
+      if (isCensored) {
+        censorElement(arg, true);
+      }
+    }
+  };
 })();
