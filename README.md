@@ -23,5 +23,5 @@ Installation
 
 You may also add a link for toggling the censorship like this:
 ```html
-<a href="" onclick="zensurjs(); return false;">Toggle Censorship for this page!</a>
+<a href="" onclick="this.innerHTML={true: 'I\'m against censorship!', false: 'I like censorship!'}[zensurjs()]; return false;">I'm against censorship!</a>
 ```
