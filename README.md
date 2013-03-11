@@ -20,3 +20,8 @@ Installation
   window.onload = function() { zensurjs(document.body); };
 </script>
 ```
+
+You may also add a link for toggling the censorship like this:
+```html
+<a href="" onclick="zensurjs(); return false;">Toggle Censorship for this page!</a>
+```
