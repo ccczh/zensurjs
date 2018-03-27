@@ -4,22 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=utf-8">
     <title>censored lorem ipsum</title>
-    <style type="text/css">
-      .censored { color: black; background-color: black; }
-      .halfcensored .censored { color: black; background-color: grey; }
-    </style>
     <script type="text/javascript" src="zensur.js"></script>
-    <script type="text/javascript">
-      window.onload = function() { zensurjs(document.body); };
-    </script>
   </head>
 
   <body>
-    <p class="halfcensored">
-    This page is censored. <a href="" onclick="this.innerHTML={true: 'I\'m against censorship!', false: 'I like censorship!'}[zensurjs()]; return false;">I'm against censorship!</a>
-    </p>
-
     <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam
     lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra

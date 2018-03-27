@@ -16,12 +16,10 @@
     // x     censored   -> censored
   ];
   var censored_tag = "span";
-  var censored_class = "censored";
+  var censored_class = "zensurjs_censored";
   var start_censor = "<" + censored_tag + " class=\"" + censored_class + "\">";
   var stop_censor = "</" + censored_tag + ">";
   var re_censor = /[0-9A-Za-z]/;
-  var isCensored = true;
-  var censoredElements = [];
 
   function splitWords(text) {
     // some older IEs don't suppport capturing parentheses
@@ -101,7 +99,6 @@
     var childs = element.childNodes;
     var uncensored = false;
     for (var i in childs) {
-
       if (childs[i].nodeType === 1 &&
           childs[i].nodeName !== "OPTION" &&
           childs[i].nodeName !== "SCRIPT" &&
@@ -134,7 +131,6 @@
           element.replaceChild(newnode, childs[i]);
         }
       }
-
       else if (on &&
           childs[i].nodeType === 3 &&
           childs[i].nodeValue.match(re_censor))
@@ -147,23 +143,29 @@
     return uncensored;
   }
 
-  function doCensor(on) {
-    for (var i in censoredElements) {
-      censorElement(censoredElements[i], on);
+  function injectCSS(arg) {
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = censored_tag + '.' + censored_class + ' { color: black; background-color: black; }';
+    arg.appendChild(style);
+  }
+
+  function addLoadEvent(func) {
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function') {
+      window.onload = func;
+    } else {
+      window.onload = function() {
+        if (oldonload) {
+          oldonload();
+        }
+        func();
+      }
     }
   }
 
-  window.zensurjs = function(arg) {
-    if (arg === undefined) {
-      isCensored = !isCensored;
-      doCensor(isCensored);
-    }
-    else {
-      censoredElements.push(arg);
-      if (isCensored) {
-        censorElement(arg, true);
-      }
-    }
-    return isCensored;
-  };
+  addLoadEvent(function() {
+    censorElement(document.body, true);
+    injectCSS(document.head);
+  });
 })();
