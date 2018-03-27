@@ -6,10 +6,17 @@
   <head>
     <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=utf-8">
     <title>censored lorem ipsum</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        document.getElementById("test_onload").innerHTML = "Test passed!";
+      };
+    </script>
     <script type="text/javascript" src="zensur.js"></script>
   </head>
 
   <body>
+    <p id="test_onload">Test failed.</p>
+
     <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam
     lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra
@@ -55,7 +62,9 @@ ultrices egestas quis ut quam. Donec sollicitudin lectus a mauris pulvinar
 id aliquam urna cursus. Cras quis ligula sem, vel elementum mi. Phasellus
 non ullamcorper urna.</pre>
 
-    <textarea cols="80" rows="10">Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+    <textarea cols="80" rows="10">Textareas stay uncensored.
+
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
 inceptos himenaeos. In euismod ultrices facilisis. Vestibulum porta sapien
 adipiscing augue congue id pretium lectus molestie. Proin quis dictum nisl.
 Morbi id quam sapien, sed vestibulum sem. Duis elementum rutrum mauris sed
